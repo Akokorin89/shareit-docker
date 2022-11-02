@@ -104,6 +104,8 @@ public class BookingServiceImpl implements BookingService {
                 bookingList = bookingRepository.findByBooker_IdAndStatus(userId, BookingStatus.REJECTED, pageable);
                 break;
         }
+        if (bookingList.isEmpty())
+            throw new NoSuchElementException("Bookings not found");
         return bookingList;
     }
 
@@ -136,6 +138,8 @@ public class BookingServiceImpl implements BookingService {
                         pageable);
                 break;
         }
+        if (bookingList.isEmpty())
+            throw new NoSuchElementException("Bookings not found");
         return bookingList;
     }
 
@@ -161,7 +165,5 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidateException("Start in past");
         if (booking.getEnd().isBefore(booking.getStart()))
             throw new ValidateException("End before start");
-        if (booking.getEnd().isBefore(LocalDateTime.now()))
-            throw new ValidateException("End in past");
     }
 }
